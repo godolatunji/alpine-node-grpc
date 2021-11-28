@@ -1,9 +1,9 @@
-FROM alpine:3.12
+FROM alpine:3.15
 
-ENV NODE_VERSION 12.18.3
+ENV NODE_VERSION 16.13.0
 
 ENV GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc
-ENV GLIBC_VERSION=2.28-r0
+ENV GLIBC_VERSION=2.34-r0
 
 RUN set -ex && \
     apk --update add libstdc++ curl ca-certificates && \
@@ -23,7 +23,7 @@ RUN addgroup -g 1000 node \
       && case "${alpineArch##*-}" in \
         x86_64) \
           ARCH='x64' \
-          CHECKSUM="14dafe026366e7a9cc8d4737b1fcdcb6c534667e22bbeea63a29a1791ac6ac1f" \
+          CHECKSUM="f78b7f49c92559855d7804b67101a0da393ad75950317c9138a15cd05292f7a6" \
           ;; \
         *) ;; \
       esac \
