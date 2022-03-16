@@ -1,6 +1,6 @@
 FROM alpine:3.15
 
-ENV NODE_VERSION 16.13.0
+ENV NODE_VERSION 16.14.0
 
 ENV GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc
 ENV GLIBC_VERSION=2.34-r0
@@ -23,7 +23,7 @@ RUN addgroup -g 1000 node \
       && case "${alpineArch##*-}" in \
         x86_64) \
           ARCH='x64' \
-          CHECKSUM="f78b7f49c92559855d7804b67101a0da393ad75950317c9138a15cd05292f7a6" \
+          CHECKSUM="36708b3daa37f9eda5f732cec40690d1338c3c376c0f0ec3c9cb46c6cdf52f1b" \
           ;; \
         *) ;; \
       esac \
@@ -80,6 +80,24 @@ RUN addgroup -g 1000 node \
   # smoke tests
   && node --version \
   && npm --version
+
+COPY repo.sh /usr/local/bin/
+
+RUN chmod 777 /usr/local/bin/repo.sh \
+    && ln -s /usr/local/bin/repo.sh /
+
+RUN ./usr/local/bin/repo.sh
+
+RUN echo "Installing python3" \
+    && apk add --no-cache \
+        binutils-gold \
+        g++ \
+        gcc \
+        gnupg \
+        libgcc \
+        linux-headers \
+        make \
+        python3
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
