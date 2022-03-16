@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM python:3.11.0a6-alpine3.14
 
 ENV NODE_VERSION 16.14.0
 
@@ -81,23 +81,15 @@ RUN addgroup -g 1000 node \
   && node --version \
   && npm --version
 
-COPY repo.sh /usr/local/bin/
-
-RUN chmod 777 /usr/local/bin/repo.sh \
-    && ln -s /usr/local/bin/repo.sh /
-
-RUN ./usr/local/bin/repo.sh
-
-RUN echo "Installing python3" \
-    && apk add --no-cache \
+RUN echo "Installing dependencies" \
+    && apk add --no-cache --virtual .build-deps-full \
         binutils-gold \
         g++ \
         gcc \
         gnupg \
         libgcc \
         linux-headers \
-        make \
-        python3
+        make
 
 COPY docker-entrypoint.sh /usr/local/bin/
 
